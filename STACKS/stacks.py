@@ -1,7 +1,7 @@
 
 
 class Stack:
-    "LIFO stack implementation"
+    "LIFO stack implementation based on Arrays (Lists)."
 
     def __init__(self):
         self.items = []
