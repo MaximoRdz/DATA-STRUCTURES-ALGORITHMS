@@ -1,9 +1,9 @@
-class SimpleNode:
+class DoubleNode:
     def __init__(
         self,
         elem: object,
-        next: "SimpleNode" = None,
-        prev: "SimpleNode" = None
+        next: "DoubleNode" = None,
+        prev: "DoubleNode" = None
     ):
         self.elem = elem
         self.prev = prev
@@ -50,7 +50,7 @@ class LinkedList:
         return self._size == 0
 
     def append(self, item: object) -> None:
-        node = SimpleNode(item)
+        node = DoubleNode(item)
 
         if self.is_empty():
             self._head = node
@@ -84,7 +84,7 @@ class LinkedList:
         return result
 
     def appendleft(self, item: object) -> None:
-        node = SimpleNode(item)
+        node = DoubleNode(item)
 
         if self.is_empty():
             self._head = node
@@ -151,7 +151,7 @@ class LinkedList:
         for i in range(ind - 1):
             node = node.next
 
-        new_node = SimpleNode(item, node.next, node)
+        new_node = DoubleNode(item, node.next, node)
         node.next = new_node
         self._size += 1
 
