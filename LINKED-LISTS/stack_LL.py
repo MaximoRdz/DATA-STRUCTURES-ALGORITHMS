@@ -1,6 +1,3 @@
-
-
-
 class SimpleNode:
     def __init__(self, e: object, next_node: "SimpleNode" = None) -> None:
         self.elem = e
