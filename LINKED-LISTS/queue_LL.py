@@ -59,5 +59,6 @@ if __name__ == "__main__":
     q.append(4)
     q.append(5)
     q.append(6)
+    q.append(None)
 
     print(q)
