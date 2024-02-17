@@ -1,5 +1,3 @@
-
-
 class BinaryNode:
     def __init__(
             self,
@@ -90,10 +88,22 @@ class BinaryTree:
     
     def _inorder(self, node: BinaryNode) -> None:
         "second visited or (left, root, right)"
-        if node is not None:
-            print(node.elem, end=" ")       
-            self._preorder(node.left)
-            self._preorder(node.right)
+        if node is not None:    
+            self._inorder(node.left)
+            print(node.elem, end=" ")  
+            self._inorder(node.right)
+
+    def postorder(self) -> None:
+        print("\nPostorder Traversal Recursive:")
+        self._postorder(self._root)
+        print()
+    
+    def _postorder(self, node: BinaryNode) -> None:
+        "third/last visited or (left, right, root)"
+        if node is not None:    
+            self._postorder(node.left)
+            self._postorder(node.right)
+            print(node.elem, end=" ")  
 
     def pre_order_traversal(self):
         """Pre Order traversal by default."""
@@ -150,5 +160,8 @@ if __name__ == "__main__":
     print("PreOrder Stack: ", tree.pre_order_traversal())
     tree.preorder()
     tree.inorder()
+    tree.postorder()
+
+
 
 
