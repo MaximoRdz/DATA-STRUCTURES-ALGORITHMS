@@ -20,7 +20,7 @@ class BinarySearchTree:
     def __init__(self, root: BSNode = None):
         self._root = root
 
-    def height(self):
+    def height(self) -> int:
         return self._height(self._root)
     
     def _height(self, node: BSNode) -> int:
@@ -29,11 +29,11 @@ class BinarySearchTree:
         
         return 1 + max(self._height(node.left), self._height(node.right))
 
-    def search(self, item):
+    def search(self, item: object) -> bool:
         """Search for 'item' in BST. Return True if found."""
         return self._search(item, self._root)
 
-    def _search(self, item, node: BSNode) -> bool:
+    def _search(self, item: object, node: BSNode) -> bool:
         """
         Easier than binary search, data already organized in a decision tree
         manner.
@@ -48,7 +48,7 @@ class BinarySearchTree:
             
         return False
     
-    def insert_iterative(self, item) -> None:
+    def insert_iterative(self, item: object) -> None:
 
         node = self._root
         parent = None
@@ -68,10 +68,10 @@ class BinarySearchTree:
         else:
             parent.left = BSNode(item, item)
 
-    def insert(self, item) -> None:
+    def insert(self, item: object) -> None:
         self._root = self._insert(self._root, item)
 
-    def _insert(self, node: BSNode, item) -> BSNode:
+    def _insert(self, node: BSNode, item: object) -> BSNode:
         """
         Recursive Insertion Implementation.
         Nodes are re-assigned the same value until they become None, 
@@ -90,11 +90,23 @@ class BinarySearchTree:
             node.right = self._insert(node.right, item)
         
         return node
+    
+    def remove(self, item: object) -> None:
+        self._root = self._remove(self._root, item)
+
+    def _remove(self, node: BSNode, item: object) -> BSNode:
+        """
+        Recursively search the node to remove.
+        1) Remove Node is leaf: Simply remove connection with parent.
+        2) Remove Node has one child: Parent node now must point to its grandchild.
+        3) Remove Node has two children: To meet BST condition search for a successor
+        such that, every key of the left subtree will be smaller than the successor
+        and every key in the right subtree will be larger. Successor will be the smallest
+        item in right subtree of 'Remove Node'.
+        """
+        pass
             
         
-
-
-
 if __name__ == "__main__":
     depth_5_16 = BSNode(16, 16)
 
