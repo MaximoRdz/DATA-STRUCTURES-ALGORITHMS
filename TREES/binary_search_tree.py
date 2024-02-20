@@ -1,3 +1,6 @@
+from collections import deque
+
+
 class BinaryNode:
     def __init__(self, elem, left: "BinaryNode" = None, right: "BinaryNode" = None):
         self.elem = elem
@@ -18,7 +21,22 @@ class BinarySearchTree:
     of the right subtree.
     """
     def __init__(self, root: BSNode = None):
-        self._root = root
+        self._root = root   
+
+    def __str__(self):
+        q = deque()
+        q.append(self._root)
+        nodes = []
+        while q:
+            node = q.popleft()
+            
+            if node is not None:
+                nodes.append(node.elem)
+            
+                q.append(node.left)
+                q.append(node.right)
+        
+        return ", ".join(nodes)
 
     def height(self) -> int:
         return self._height(self._root)
@@ -91,6 +109,17 @@ class BinarySearchTree:
         
         return node
     
+    def _minimum_node(self, node: BSNode):
+        """Iterativel find min function."""
+        if node is None:
+            return None
+        
+        min_node = node
+        while min_node.left:
+            min_node = min_node.left
+        
+        return min_node
+        
     def remove(self, item: object) -> None:
         self._root = self._remove(self._root, item)
 
@@ -102,10 +131,42 @@ class BinarySearchTree:
         3) Remove Node has two children: To meet BST condition search for a successor
         such that, every key of the left subtree will be smaller than the successor
         and every key in the right subtree will be larger. Successor will be the smallest
-        item in right subtree of 'Remove Node'.
+        item in RIGHT subtree of 'Remove Node'.
         """
-        pass
+        if node is None:
+            print(f"Item: {item} not found in TREE.")
+            return
+
+        if node.elem < item:
+            node.right = self._remove(node.right, item)
+
+        elif node.elem > item:
+            node.left = self._remove(node.left, item)
+        
+        else:
+            if node.left is None and node.right is None:
+                # Returning None and because the recursive nature of calls of this function
+                # makes parent node disconnected from this node. Since calls stack up and
+                # when it falls None the tree cannot continue to this position.
+                return None
+
+            if node.left is None:
+                # The node to remove has exactly one child so we pass this child directly to
+                # the parent node making a bridge on the reference connection (python garbage
+                # collector will get rid of this)
+                return node.right
             
+            elif node.right is None:
+                return node.left
+            
+            else:
+                # Node to remove has two children, successor -> smallest right subtree item
+                successor = self._minimum_node(node.right)
+                node.elem = successor.elem
+                node.right = self._remove(node.right, successor.elem)
+        
+        return node
+
         
 if __name__ == "__main__":
     depth_5_16 = BSNode(16, 16)
@@ -135,5 +196,16 @@ if __name__ == "__main__":
     tree.insert(8)
     print("Insert 8 in tree.")
     print("Search 8 in Tree: ", tree.search(8))
+
+    print("Search 5 in Tree: ", tree.search(5))
+    print(tree)
+    print("Remove 5")
+    tree.remove(5)
+    print("Search 5 in Tree: ", tree.search(5))
+    print(tree)
+
+
+
+
 
 
