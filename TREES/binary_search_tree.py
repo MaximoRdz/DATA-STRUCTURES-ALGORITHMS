@@ -31,7 +31,11 @@ class BinarySearchTree:
             node = q.popleft()
             
             if node is not None:
-                nodes.append(node.elem)
+                nodes.append(
+                    f"{node.elem}->"
+                    + f"({node.left.elem if node.left is not None else None};"
+                    + f"{node.right.elem if node.right is not None else None})"
+                    )
             
                 q.append(node.left)
                 q.append(node.right)
@@ -198,6 +202,7 @@ if __name__ == "__main__":
     print("Search 8 in Tree: ", tree.search(8))
 
     print("Search 5 in Tree: ", tree.search(5))
+    print("REMOVE METHOD CHECK: ")
     print(tree)
     print("Remove 5")
     tree.remove(5)
