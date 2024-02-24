@@ -114,7 +114,7 @@ class BinarySearchTree:
         return node
     
     def _minimum_node(self, node: BSNode):
-        """Iterativel find min function."""
+        """Iterative find min function."""
         if node is None:
             return None
         
