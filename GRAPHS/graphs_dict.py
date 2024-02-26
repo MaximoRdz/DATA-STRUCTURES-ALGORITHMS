@@ -1,5 +1,9 @@
 """Graph Data Structure implementation based on Python dicts."""
 
+from collections import namedtuple, deque
+
+
+AdjacentNeighbor = namedtuple("AdjacentNeighbor", "node weight")
 
 class Graph:
     """Directed or Undirected simple or weighted graph class."""
@@ -43,10 +47,10 @@ class Graph:
             print(f"Edge {start} -> {end} exists already.")
             return
         
-        self._vertices[start].append((end, weight))
+        self._vertices[start].append(AdjacentNeighbor(end, weight))
 
         if not self._directed:
-            self._vertices[end].append((start, weight))
+            self._vertices[end].append(AdjacentNeighbor(start, weight))
        
     def remove_edge(self, start, end):
 
@@ -58,18 +62,68 @@ class Graph:
             print(f"Node {end} does not exist.")
             return
         
-        remove_ind = None
-        for i, (adj, _) in enumerate(self._vertices[start]):
-            if adj == end:
-                remove_ind = i
-
-        if remove_ind is not None:
-            self._vertices[start].pop(remove_ind)   
+        for neighbor in self._vertices[start]:
+            if neighbor.node == end:
+                self._vertices[start].remove(neighbor)
+                break
         else:
             print(f"Edge {start} -> {end} does not exist cannot be removed.")     
 
         if not self._directed:
-            self.remove_edge(end, start)
+            for neighbor in self._vertices[end]:
+                if neighbor.node == start:
+                    self._vertices[end].remove(neighbor)
+                    break
+            else:
+                print(f"Edge {end} -> {start} does not exist cannot be removed.")  
+
+    def bfs(self, start):
+        if start not in self._vertices:
+            print(f"Node {start} does not exist.")
+            return
+        
+        q = deque()
+        q.append(start)
+        visited = set()
+        path =[]
+
+        while q:
+            node = q.popleft()
+            
+            if node in visited:
+                continue
+
+            path.append(node)
+            visited.add(node)
+
+            for neighbor in self._vertices[node]:
+                if neighbor.node in visited:
+                    continue
+                q.append(neighbor.node)
+        
+        return path
+    
+    def dfs(self, start):
+        if start not in self._vertices:
+            print(f"Node {start} does not exist.")
+            return
+        
+        path = []
+        visited = set()
+        self._dfs(start, visited, path)
+
+        return path 
+    
+    def _dfs(self, node, visited, path):       
+        visited.add(node)
+        path.append(node)
+
+        for neighbor in self._vertices[node]:
+            if neighbor.node not in visited:
+                self._dfs(neighbor.node, visited, path)
+        
+
+
         
 
 if __name__ == "__main__":
@@ -98,8 +152,36 @@ if __name__ == "__main__":
 
     print(g)
 
+    print("Remove E-D")
     g.remove_edge("E", "D")
     print(g)
+    g.add_edge("D", "E", 8)
+
+    print("BFS Graph Traversal: ", g.bfs("A"))
+
+    print("DFS Graph Traversal: ", g.dfs("A"))
+
+    print("\n\n\t EXAMPLE 2: \n\n")
+
+    g = Graph(['a', 'b', 'c', 'd', 'e'], directed=True)      
+
+    g.add_edge('a','b')
+    g.add_edge('a','c')
+    g.add_edge('a','d')
+    g.add_edge('a','e')
+
+    g.add_edge('b','d')
+    g.add_edge('c','d')
+    g.add_edge('c','e')
+    g.add_edge('d','e')
+
+    print(g)
+    print("BFS Graph Traversal: ", g.bfs("a"))
+
+    print("DFS Graph Traversal: ", g.dfs("a"))
+
+    
+
 
 
 
