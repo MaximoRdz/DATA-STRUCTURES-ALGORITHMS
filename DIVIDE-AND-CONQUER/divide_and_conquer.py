@@ -16,18 +16,16 @@ def _find_max(i: int, j: int, array: list):
 
 
 def mergesort(array: list):
-    return _mergesort(0, len(array) - 1, array)
-
-
-def _mergesort(i: int, j: int, array: list):
-    mid = (i + j) // 2
-
-    return _merge(_mergesort(i, mid, array), _mergesort(mid + 1, j, array))
+    if array:
+        mid = (len(array) - 1) // 2
+        left = mergesort(array[:mid])
+        right = mergesort(array[mid:])
+        
+        return _merge(left, right)
 
 
 def _merge(left_array: list, right_array: list):
     result = []
-
     i, j = 0, 0
 
     while i < len(left_array) and j < len(right_array):
