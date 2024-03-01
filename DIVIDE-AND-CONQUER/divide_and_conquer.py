@@ -16,12 +16,12 @@ def _find_max(i: int, j: int, array: list):
 
 
 def mergesort(array: list):
-    if array:
-        mid = (len(array) - 1) // 2
+    if len(array) > 1:
+        mid = len(array) // 2
         left = mergesort(array[:mid])
         right = mergesort(array[mid:])
-        
-        return _merge(left, right)
+        array = _merge(left, right)    
+    return array
 
 
 def _merge(left_array: list, right_array: list):
@@ -38,10 +38,12 @@ def _merge(left_array: list, right_array: list):
     
     while i < len(left_array):
         result.append(left_array[i])
+        i += 1
 
     while j < len(right_array):
         result.append(right_array[j])
-    
+        j += 1
+
     return result
 
 
@@ -52,6 +54,6 @@ if __name__ == "__main__":
     print("Numpy max: ", array.max())
 
     A = list(np.random.randint(0, 20, (5,)))
-    print(A)
+    print("Random: ", A)
     print("Sorted: ", mergesort(A))
 
